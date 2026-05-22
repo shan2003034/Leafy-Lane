@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leafy Lane Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --leafy-green: #59C338; /* Main primary green */
+            --leafy-dark-green: #4CAF50; /* Slightly darker green for hover/active */
+            --leafy-light-green: #e6ffe6; /* Light green for backgrounds */
+            --text-dark: #333;
+            --text-light: #f8f9fa;
+            --sidebar-width: 200px; /* Define sidebar width as a CSS variable */
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+            min-height: 100vh;
+            display: flex; /* Always flex for layout */
+        }
+
+        /* Sidebar Styling for Offcanvas (small screens) */
+        .offcanvas-start {
+            width: var(--sidebar-width) !important; /* Apply width with !important for offcanvas */
+            background-color: var(--leafy-dark-green);
+            color: var(--text-light);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            border-right: none;
+            visibility: hidden; 
+        }
+        
+        /* Sidebar Styling for Large Screens (static) */
+        @media (min-width: 992px) { /* On large screens (lg) */
+            .offcanvas-start {
+                position: sticky;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                overflow-y: auto;
+                transform: none !important; /* Override offcanvas transform */
+                visibility: visible !important; /* Always visible */
+                flex-shrink: 0; /* Prevent sidebar from shrinking */
+                border-radius: 0; /* No rounded corners like offcanvas default */
+                width: var(--sidebar-width) !important; /* Apply width with !important for static sidebar */
+            }
+            /* Show the sidebar header content only on large screens,
+               but make offcanvas-header itself display: flex again for alignment */
+            .offcanvas-header {
+                display: flex; /* Re-enable flex for large screens header content */
+                text-align: center;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                justify-content: center; /* Center content in header */
+                flex-direction: column; /* Stack logo and title */
+            }
+            .offcanvas-header .btn-close {
+                display: none; /* Hide the close button on large screens */
+            }
+            .offcanvas-body {
+                padding: 20px; /* Add padding to the body when static */
+            }
+            #content {
+                margin-left: 0;
+            }
+        }
+
+        /* General Sidebar Styling */
+        #sidebar .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Adjustments for logo and title in header */
+        #sidebar .sidebar-header img {
+            max-width: 80px; /* Adjust max-width as needed */
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        #sidebar .sidebar-header h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 10px; /* Adjusted margin-top for better spacing */
+            font-size: 1.3em; /* Adjusted font size for title in smaller sidebar */
+        }
+
+        #sidebar .nav-link {
+            color: var(--text-light);
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+            font-size: 0.95em; /* Adjusted font size for links */
+        }
+
+        #sidebar .nav-link:hover,
+        #sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        #sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        /* Main Content Area */
+        #content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        /* Top Navbar Styling */
+        #top-navbar {
+            background-color: #fff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #top-navbar .navbar-brand {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--leafy-green);
+            font-size: 1.5em;
+        }
+
+        #top-navbar .nav-item .nav-link {
+            color: var(--text-dark);
+            font-size: 1.1em;
+        }
+
+        #top-navbar .nav-item .nav-link:hover {
+            color: var(--leafy-green);
+        }
+
+        #top-navbar .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        /* Overview Cards */
+        .overview-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .overview-card .icon-box {
+            background-color: var(--leafy-light-green);
+            color: var(--leafy-green);
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 1.8em;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .overview-card .card-content {
+            text-align: right;
+            flex-grow: 1;
+        }
+
+        .overview-card .card-content h5 {
+            font-size: 1.1em;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .overview-card .card-content p {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* Tables */
+        .card-panel {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+        }
+
+        .card-panel h4 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        .table-responsive .table thead th {
+            background-color: var(--leafy-light-green);
+            color: var(--leafy-dark-green);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<body onload="loadDashboard();">
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header sidebar-header">
+            
+            <h3 class="offcanvas-title" id="sidebarLabel">Leafy Lane <br>Admin</h3>
+            <button type="button" class="btn-close text-reset btn-close-white d-lg-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-users"></i> Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin-product.html"><i class="fas fa-seedling"></i> Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-basket"></i> Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-truck"></i> Deliveries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-chart-line"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-comments"></i> Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-tags"></i> Promotions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a type="button" onclick="signout();" class="nav-link" ><i class="fas fa-sign-out-alt" ></i> Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="content" class="flex-grow-1">
+        <nav id="top-navbar" class="navbar navbar-expand-lg">
+            <button class="btn btn-primary d-lg-none me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#">Dashboard</a> <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://via.placeholder.com/30/59C338/FFFFFF?text=A" class="rounded-circle me-1" alt="Admin" style="object-fit: cover;"> Admin User
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cogs me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-3">
+                <div class="overview-card">
+                    <div class="icon-box"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="card-content">
+                        <h5>Total Orders</h5>
+                        <p id="order"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="overview-card">
+                    <div class="icon-box"><i class="fas fa-grip-horizontal"></i></div>
+                    <div class="card-content">
+                        <h5>Total Variety</h5>
+                        <p id="variety"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="overview-card">
+                    <div class="icon-box"><i class="fas fa-users"></i></div>
+                    <div class="card-content">
+                        <h5> Customers</h5>
+                        <p id="user"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="overview-card">
+                    <div class="icon-box"><i class="fas fa-seedling"></i></div>
+                    <div class="card-content">
+                        <h5>Products in Stock</h5>
+                        <p id="product"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card-panel">
+                    <h4>Recent Orders</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Order ID</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="order-table-body">
+                                <tr>
+                                    <td>#LL1005</td>
+                                    <td>Kasun Perera</td>
+                                    <td>2024-08-07</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card-panel">
+                    <h4>Top Selling Products</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Organic Carrots <span class="badge bg-primary rounded-pill">120</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Farm Fresh Eggs <span class="badge bg-primary rounded-pill">90</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Artisan Cheese <span class="badge bg-primary rounded-pill">75</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Fresh Spinach <span class="badge bg-primary rounded-pill">60</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">Homemade Jam <span class="badge bg-primary rounded-pill">50</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="assests/js/admin-sign-out.js"></script>
+    <script src="assests/js/dashboard.js"></script>
+</body>
+</html>

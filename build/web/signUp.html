@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - www.codingnepalweb.com -->
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Cache-Control" content="no-store"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+
+        <title> Registation </title>
+        <link rel="stylesheet" href="assests/style1st.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+
+    <body>
+
+
+        <div class="wrapper2">
+            
+                <h2>Registartion</h2>
+
+                
+
+                <div class="row">
+                    <div class="offset-2 col-8 justify-content-center">
+                        <p id="serverMessage" class="text-danger"></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-2">
+                        <div class="input-field">
+                            <input id="first_name" type="text" required>
+                            <label>Enter your first Name</label>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <div class="input-field">
+                            <input id="last_name" type="text" required>
+                            <label>Enter your last Name</label>
+                        </div>
+                    </div>
+
+                    <div class="col-6 mb-2">
+                        <div class="input-field">
+                            <input id="email" type="email" required>
+                            <label>Enter your email</label>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <div class="input-field">
+                            <input id="mobile" type="text" required>
+                            <label>Enter your mobile number</label>
+                        </div>
+                    </div>
+
+                    <div class="col-6 mb-2">
+                        <div class="input-field">
+                            <input id="password" type="password" required>
+                            <label>Enter password</label>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <div class="input-field">
+                            <input id="conform_password" type="password" required>
+                            <label>password conformation</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="offset-2 col-8">
+                        <button onclick="signup();" type="submit">Registartion</button>
+                    </div>
+                </div>
+
+                <div class="register">
+                    <p>You have an account? <a href="login.html">Log in</a></p>
+                </div>
+            
+        </div>
+
+
+
+        <script src="assests/js/signUp.js"></script>
+    </body>
+
+</html>

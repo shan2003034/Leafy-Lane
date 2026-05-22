@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Foody - Organic Food Website Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <link href="img/favicon.ico" rel="icon">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap"
+              rel="stylesheet">
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="assests/css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="assests/css/style.css" rel="stylesheet">
+        <style>
+            /* Custom styles for cart page - can be moved to a separate CSS file if preferred */
+            .cart-item-image {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                border-radius: .25rem; /* Bootstrap's rounded corners */
+            }
+            .table img {
+                max-width: 80px;
+                height: auto;
+                border-radius: 5px;
+            }
+            .table th, .table td {
+                vertical-align: middle;
+            }
+            .quantity-control {
+                display: flex;
+                align-items: center;
+                border: 1px solid #dee2e6;
+                border-radius: .25rem;
+                width: 120px; /* Adjust as needed */
+            }
+            .quantity-control button {
+                border: none;
+                background-color: transparent;
+                padding: .5rem .75rem;
+                cursor: pointer;
+            }
+            .quantity-control input {
+                text-align: center;
+                border: none;
+                width: 100%;
+                padding: .5rem 0;
+                -moz-appearance: textfield; /* Hide arrows for Firefox */
+            }
+            .quantity-control input::-webkit-outer-spin-button,
+            .quantity-control input::-webkit-inner-spin-button {
+                -webkit-appearance: none; /* Hide arrows for Chrome, Safari, Edge */
+                margin: 0;
+            }
+            .cart-summary .card-body ul li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: .75rem 0;
+                border-bottom: 1px dashed #e9ecef;
+            }
+            .cart-summary .card-body ul li:last-child {
+                border-bottom: none;
+            }
+        </style>
+
+    </head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <body onload="loadCartItems();">
+        <div id="spinner"
+             class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" role="status"></div>
+        </div>
+        <!-- Navbar Start -->
+        <div class="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
+            <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+                <div class="col-lg-6 px-5 text-start">
+                    <small><i class="fa fa-map-marker-alt me-2"></i>No.52, Kotuwegoda, Matara</small>
+                    <small class="ms-4"><i class="fa fa-envelope me-2"></i>leafylane6@gmail.com</small>
+                </div>
+                <div class="col-lg-6 px-5 text-end">
+                    <small>Follow us:</small>
+                    <a class="text-body ms-3" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+
+                <a href="index.html" title="Go to Homepage">
+                    <img 
+                        src="assests/img/logo.png" 
+                        alt="Your Company Logo" 
+                        style="width: 150px; height:100px; max-width: 100%; display: block;"
+                        >
+                </a>
+
+
+                <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto p-4 p-lg-0">
+<!--                        <a href="index.html" class="nav-item nav-link active">Home</a>-->
+                        
+                    </div>
+                    <div class="d-none d-lg-flex ms-2">
+                      
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="index.html">
+                            <small class="fa fa-home text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="advanced-search.html">
+                            <small class="fa fa-search text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="my-account.html">
+                            <small class="fa fa-user text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="cart.html">
+                            <small class="fa fa-shopping-bag text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="login.html">
+                            <small class="fa fa-sign-in-alt text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" onclick="signout();">
+                            <small class="fa fa-sign-out-alt text-body"></small> 
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Navbar End -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <h2 class="fw-bold text-primary mb-5 text-center mt-5">Your Shopping Cart</h2>
+                <div class="row g-4" id="cart-area">
+                    <div class="col-lg-8">
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle" id="cart-table">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cart-item-table-body">
+                                    <tr data-product-id="1">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="img/organic-product-1.jpg" class="img-fluid rounded me-3 cart-item-image" alt="Organic Carrot">
+                                                <div>
+                                                    <h6 class="mb-0">Fresh Organic Carrots</h6>
+                                                    <small class="text-muted">Net Weight: <span> 1 </span>  <span> kg</span></small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>$4.50</td>
+                                        <td>
+                                            <div class="quantity-control">
+                                                <button class="btn btn-sm btn-outline-secondary btn-minus" data-id="1">-</button>
+                                                <input type="number" class="form-control form-control-sm text-center quantity-input" value="1" min="1" data-price="4.50" data-id="1">
+                                                <button class="btn btn-sm btn-outline-secondary btn-plus" data-id="1">+</button>
+                                            </div>
+                                        </td>
+                                        <td class="item-subtotal">$4.50</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger remove-item" data-id="1"><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        
+                        <div class="row">
+                            <div class="offset-lg-8 col-lg-4">
+                                 <img id="cart-img"  src="assests/img/empty-cart.png" style="max-width: 70%; max-height: auto; display:none">
+                            </div>
+                            
+                           
+                            
+                            
+                        </div>
+
+
+                        <div class="d-flex justify-content-end mt-4" id="cart-button">
+                            <button class="btn btn-secondary rounded-pill px-4 py-2" id="clearCartBtn" onclick="removeall();"><i class="fa fa-trash-alt me-2"></i> Clear Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card shadow-sm border-0 cart-summary" id="summary-area">
+                            <div class="card-header bg-primary text-white text-center py-3 rounded-top">
+                                <h4 class="mb-0">Cart Summary</h4>
+                            </div>
+                            <div class="card-body p-4">
+                                <ul class="list-unstyled mb-4">
+                                    <li>
+                                        <span>Quantities:</span>
+                                        <span class="fw-bold" id="order-total-quantity">5</span>
+                                    </li>
+                                    <li>
+                                        <span>Subtotal:</span>
+                                        <span class="fw-bold" id="order-total-amount">$13.25</span>
+                                    </li>
+
+
+                                </ul>
+                                <div class="d-grid">
+                                    <a href="checkout.html" class="btn btn-primary rounded-pill py-3" id="checkoutBtn"><i class="fa fa-shopping-cart me-2"></i> Proceed to Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-lg-4 col-md-6 mt-1">
+                        <a href="index.html" title="Go to Homepage">
+                            <img src="assests/img/favicon.png" alt="Leafy Lane company logo"
+                                 style="width: 150px; height:100px; max-width: 100%; display: block;">
+                        </a>
+                        <p>Welcome to Leafy Lane! We bring high-quality organic fruits, vegetables, and other farm
+                            produce directly from local farmers in Sri Lanka to your doorstep. </p>
+                        <div class="d-flex pt-2">
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i
+                                    class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i
+                                    class="fab fa-youtube"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-0" href=""><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="offset-lg-1 col-lg-3 col-md-6 ">
+                        <h4 class="text-light mb-4">Address</h4>
+                        <p><i class="fa fa-map-marker-alt me-3"></i>No.52, Kotuwegoda, Matara</p>
+                        <p><i class="fa fa-phone-alt me-3"></i>0412265789</p>
+                        <p><i class="fa fa-envelope me-3"></i>leafylane6@gmail.com</p>
+                    </div>
+                    <div class="offset-lg-1 col-lg-3 col-md-6">
+                        <h4 class="text-light mb-4">Quick Links</h4>
+                        <a class="btn btn-link" href="">About Us</a>
+                        <a class="btn btn-link" href="">Contact Us</a>
+                        <a class="btn btn-link" href="">Our Services</a>
+                        <a class="btn btn-link" href="">Terms & Condition</a>
+                        <a class="btn btn-link" href="">Support</a>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="container-fluid copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a href="#">Leafy </a>, All Right Reserved.
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Powerd By <a href="#">Callisto software solution </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+                class="bi bi-arrow-up"></i></a>
+
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script> 
+        <script src="lib/easing/easing.min.js"></script> 
+        <script src="lib/waypoints/waypoints.min.js"></script> 
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script> 
+
+        <script src="assests/js/main.js"></script>
+        <script src="assests/js/cart.js"></script>
+
+        <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    // Quantity control +/- buttons
+                                    $('.btn-plus').on('click', function () {
+                                        const input = $(this).siblings('.quantity-input');
+                                        let quantity = parseInt(input.val());
+                                        input.val(quantity + 1);
+                                        // Removed updateCartTotals() call
+                                    });
+
+                                    $('.btn-minus').on('click', function () {
+                                        const input = $(this).siblings('.quantity-input');
+                                        let quantity = parseInt(input.val());
+                                        if (quantity > 1) { // Ensure quantity doesn't go below 1
+                                            input.val(quantity - 1);
+                                        } else {
+                                            input.val(1); // Set to 1 if it tries to go below 1
+                                        }
+                                        // Removed updateCartTotals() call
+                                    });
+
+                                    // Quantity input direct change (e.g., user types a number)
+                                    $('.quantity-input').on('change', function () {
+                                        let quantity = parseInt($(this).val());
+                                        if (isNaN(quantity) || quantity < 1) {
+                                            $(this).val(1); // Default to 1 if invalid input (not a number or less than 1)
+                                        }
+                                        // Removed updateCartTotals() call
+                                    });
+
+                                    // Note: All JavaScript functionality related to updating subtotals and cart summary 
+                                    // has been removed. Only the quantity input control remains active.
+                                    // Remove Item, Clear Cart, and Checkout buttons are design-only.
+                                });
+        </script>
+
+    </body>
+
+</html>

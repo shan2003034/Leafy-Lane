@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="si">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Leafy Lane - Invoice</title>
+        <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+        <style>
+            /* General Body & Page Styling */
+            body {
+                font-family: 'Open Sans', sans-serif;
+                margin: 0;
+                padding: 20px;
+                background-color: #f4f4f4;
+                color: #333;
+                line-height: 1.6;
+            }
+            .invoice-buttons {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #eee;
+            }
+
+            /* Invoice Container */
+            .invoice-container {
+                width: 100%;
+                max-width: 900px;
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 40px;
+                border-radius: 8px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Header Section */
+            .invoice-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 40px;
+                border-bottom: 2px solid #59C338; /* Your primary green */
+                padding-bottom: 20px;
+            }
+
+            .invoice-header .logo {
+                max-width: 180px;
+                height: auto;
+            }
+
+            .invoice-header .company-details {
+                text-align: right;
+            }
+
+            .invoice-header .company-details h2 {
+                font-family: 'Lora', serif;
+                color: #59C338;
+                margin: 0;
+                font-size: 2em;
+            }
+
+            .invoice-header .company-details p {
+                margin: 2px 0;
+                font-size: 0.9em;
+            }
+
+            /* Invoice Info Section */
+            .invoice-info {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 30px;
+            }
+
+            .invoice-info div {
+                flex: 1;
+                margin-right: 20px;
+            }
+
+            .invoice-info div:last-child {
+                margin-right: 0;
+                text-align: right;
+            }
+
+            .invoice-info h3 {
+                font-family: 'Lora', serif;
+                color: #555;
+                margin-top: 0;
+                margin-bottom: 10px;
+                font-size: 1.2em;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 5px;
+            }
+
+            .invoice-info p {
+                margin: 3px 0;
+                font-size: 0.9em;
+            }
+
+            /* Table Styling */
+            .item-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 30px;
+            }
+
+            .item-table th, .item-table td {
+                padding: 12px 15px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .item-table th {
+                background-color: #f8f8f8;
+                color: #555;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.85em;
+            }
+
+            .item-table tbody tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+
+            .item-table .total-row td {
+                font-weight: 700;
+                background-color: #e6ffe6; /* Light green background for totals */
+                border-top: 2px solid #59C338;
+                font-size: 1.1em;
+            }
+
+            .item-table .total-row td:last-child {
+                text-align: right;
+            }
+
+            /* Totals Section */
+            .invoice-totals {
+                width: 100%;
+                max-width: 300px; /* Align with right side of table */
+                margin-left: auto;
+                margin-bottom: 30px;
+                border-top: 2px solid #59C338;
+                padding-top: 15px;
+            }
+
+            .invoice-totals div {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 8px;
+                font-size: 1em;
+            }
+
+            .invoice-totals .label {
+                color: #555;
+            }
+
+            .invoice-totals .value {
+                font-weight: 600;
+                color: #333;
+            }
+
+            .invoice-totals .grand-total {
+                font-size: 1.4em;
+                font-weight: 700;
+                color: #59C338;
+                margin-top: 15px;
+                padding-top: 10px;
+                border-top: 1px dashed #ddd;
+            }
+
+            /* Footer Section */
+            .invoice-footer {
+                text-align: center;
+                margin-top: 50px;
+                padding-top: 20px;
+                border-top: 1px solid #eee;
+                font-size: 0.85em;
+                color: #777;
+            }
+
+            .invoice-footer p {
+                margin: 5px 0;
+            }
+
+            /* Print Specific Styles */
+            @media print {
+                body {
+                    background-color: #fff;
+                    margin: 0;
+                    padding: 0;
+                }
+                .invoice-container {
+                    box-shadow: none;
+                    margin: 0;
+                    padding: 0;
+                    border-radius: 0;
+                }
+                .invoice-header {
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                    border-bottom: 1px solid #eee;
+                }
+                .item-table th, .item-table td {
+                    padding: 8px 10px;
+                }
+                .item-table .total-row td {
+                    background-color: #f0fdf0 !important;
+                    -webkit-print-color-adjust: exact;
+                    color-adjust: exact;
+                }
+                .invoice-footer {
+                    margin-top: 30px;
+                }
+            }
+
+        </style>
+    </head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <body onload="loadInvoice();">
+        <div class="invoice-container">
+            <div class="invoice-header">
+                <div class="company-logo">
+                    <img src="assests/img/logo2.png" alt="Leafy Lane Logo" class="logo">
+                </div>
+                <div class="company-details">
+                    <h2>Leafy Lane</h2>
+                    <p>No.52, Kotuwegoda, Matara</p>
+                    <p>Email: leafylane6@gmail.com</p>
+                    <p>Phone: 0412265789</p>
+                </div>
+            </div>
+
+            <div class="invoice-info">
+                <div>
+                    <h3>Invoice For:</h3>
+                    <p><strong id="customer-name">[Customer Name]</strong></p>
+                    <p id="line1">[Customer Address Line 1]</p>
+                    <p id="line2">[Customer Address Line 2]</p>
+                    <p ><span id="city">[Customer City]</span>, <span id="postal-code">[Customer Postal Code]</span></p>
+                    <p >Phone: <span id="mobile">[Customer Phone]</span></p>
+                    <p >Email: <span id="email">[Customer Email]</span></p>
+                </div>
+                <div>
+                    <h3>Invoice Details:</h3>
+                    <p><strong >Invoice No:</strong><span id="order-id"> #INV-2024-001<span></p>
+                                <p><strong >Invoice Date:</strong><span id="date"> 2024-08-08</span></p>
+
+
+                                </div>
+                                </div>
+
+                                <table class="item-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Description</th>
+                                            <th>Quantity</th>
+                                            <th>Unit Price</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="details-body-container">
+                                        <tr id="dtails-container">
+                                            <td id="number">1</td>
+                                            <td id="description">Organic Tomatoes (1kg)</td>
+                                            <td id="qty">2</td>
+                                            <td id="unit-price">Rs. 300.00</td>
+                                            <td id="amount">Rs. 600.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Fresh Spinach (500g)</td>
+                                            <td>1</td>
+                                            <td>Rs. 250.00</td>
+                                            <td>Rs. 250.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Homemade Strawberry Jam (250g)</td>
+                                            <td>1</td>
+                                            <td>Rs. 500.00</td>
+                                            <td>Rs. 500.00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="invoice-totals">
+                                    <div>
+                                        <span class="label">Subtotal:</span>
+                                        <span class="value" >Rs. <span id="sub-total">1500.00</span></span>
+                                    </div>
+                                    <div>
+                                        <span class="label">Shipping Cost:</span>
+                                        <span class="value" >Rs. <span id="shipping-cost">1500.00</span></span>
+                                    </div>
+
+                                    <div class="grand-total">
+                                        <span class="label">TOTAL DUE:</span>
+                                        <span class="value">Rs. <span id="grand-total">1500.00</span></span>
+                                    </div>
+                                </div>
+
+                                <div class="invoice-info">
+                                    <div>
+                                        <h3>Payment Method:</h3>
+
+                                        <p><strong>Payment Status:</strong> <span style="color: green; font-weight: bold;">Paid <i class="bi bi-check-circle-fill"></i></span></p>
+                                    </div>
+                                    <div>
+                                        <h3>Notes:</h3>
+                                        <p>Thank you for your business! We appreciate your trust in Leafy Lane.</p>
+                                        <p>All prices are in Sri Lankan Rupees (Rs.).</p>
+                                    </div>
+                                </div>
+
+                                <div class="invoice-footer">
+                                    <p>&copy; 2024 Leafy Lane. All rights reserved.</p>
+                                    <p>Visit us at: <a href="http://www.leafylane.lk" style="color: #59C338; text-decoration: none;">www.leafylane.lk</a></p>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                                    <a href="#" style="background-color: #6c757d; color: #fff; border: 1px solid #6c757d; border-radius: 50rem; padding: 0.375rem 1rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; margin-right: 0.5rem;" onclick="window.location.href = 'index.html';">
+                                        <i class="fas fa-times me-2" style="margin-right: 0.5rem;"></i> Cancel
+                                    </a>
+                                    <a href="#" style="background-color: #59C338; color: #fff; border: 1px solid #59C338; border-radius: 50rem; padding: 0.375rem 1rem; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;" onclick="window.print();">
+                                        <i class="fas fa-print me-2" style="margin-right: 0.5rem;"></i> Print
+                                    </a>
+                                </div>
+                                </div>
+                                <script src="assests/js/chekout.js"></script>
+                                </body>
+                                </html>

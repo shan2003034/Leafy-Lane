@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Foody - Organic Food Website Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+        <link href="img/favicon.ico" rel="icon">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap"
+              rel="stylesheet">
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+        <link href="assests/css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="assests/css/style.css" rel="stylesheet">
+
+        <style>
+            .form-control-rounded-pill {
+                border-radius: 50rem; /* Makes input fields pill-shaped */
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+
+            .address-card {
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 15px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .address-card:hover {
+                border-color: #59C338; /* Highlight on hover */
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                transform: translateY(-2px);
+            }
+
+            .address-card.selected {
+                border: 2px solid #59C338; /* Highlight when selected */
+                background-color: #e6ffe6; /* Light green background when selected, adjusted to new color */
+            }
+
+            .summary-card {
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
+                padding: 20px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            .payment-methods img {
+                max-height: 35px; /* Size of payment logos */
+                margin-right: 10px;
+                filter: grayscale(0%); /* Ensure colors are visible */
+                opacity: 0.8;
+                transition: opacity 0.3s ease;
+            }
+            .payment-methods img:hover {
+                opacity: 1;
+            }
+
+            /* General Spacing and Typography */
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Lora', serif;
+                color: #333;
+            }
+            p, label {
+                font-family: 'Open Sans', sans-serif;
+                color: #666;
+            }
+            /* Primary color definitions using the new color */
+            .text-primary {
+                color: #59C338 !important;
+            }
+            .btn-primary {
+                background-color: #59C338;
+                border-color: #59C338;
+            }
+            .btn-primary:hover {
+                background-color: #4CAF2E; /* Slightly darker shade for hover */
+                border-color: #4CAF2E;
+            }
+            .spinner-border {
+                color: #59C338 !important;
+            }
+            .back-to-top {
+                background-color: #59C338 !important;
+                border-color: #59C338 !important;
+            }
+            .back-to-top:hover {
+                background-color: #4CAF2E !important;
+                border-color: #4CAF2E !important;
+            }
+            /* Navbar brand color for 'Foo' part */
+            .navbar-brand h1.text-primary {
+                color: #59C338 !important;
+            }
+
+            /* Specific element overrides if needed, check your style.css for conflicts */
+            .product-item p.text-primary {
+                color: #59C338 !important;
+            }
+
+            /* Added for the specific 'oo' part of the logo */
+            .navbar-brand h1 .text-secondary {
+                color: #59C338 !important; /* This makes 'oo' match the new primary green */
+            }
+
+        </style>
+    </head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <body onload="loadCheckoutData();">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" role="status"></div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Navbar Start -->
+        <div class="container-fluid  px-0 wow fadeIn" data-wow-delay="0.1s">
+            <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+                <div class="col-lg-6 px-5 text-start">
+                    <small><i class="fa fa-map-marker-alt me-2"></i>No.52, Kotuwegoda, Matara</small>
+                    <small class="ms-4"><i class="fa fa-envelope me-2"></i>leafylane6@gmail.com</small>
+                </div>
+                <div class="col-lg-6 px-5 text-end">
+                    <small>Follow us:</small>
+                    <a class="text-body ms-3" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+
+                <a href="index.html" title="Go to Homepage">
+                    <img 
+                        src="assests/img/logo.png" 
+                        alt="Your Company Logo" 
+                        style="width: 150px; height:100px; max-width: 100%; display: block;"
+                        >
+                </a>
+
+
+                <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto p-4 p-lg-0">
+<!--                        <a href="index.html" class="nav-item nav-link active">Home</a>-->
+                        
+                    </div>
+                    <div class="d-none d-lg-flex ms-2">
+                      
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="index.html">
+                            <small class="fa fa-home text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="advanced-search.html">
+                            <small class="fa fa-search text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="my-account.html">
+                            <small class="fa fa-user text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="cart.html">
+                            <small class="fa fa-shopping-bag text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="login.html">
+                            <small class="fa fa-sign-in-alt text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" onclick="signout();">
+                            <small class="fa fa-sign-out-alt text-body"></small> 
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <!-- Navbar End -->
+        <div class="container-fluid py-5">
+            <div class="container">
+                <div class="row g-5">
+                    <div class="col-lg-7 wow fadeIn" data-wow-delay="0.1s">
+                        <h3 class="mb-4 text-primary">Shipping Address</h3>
+
+                        <div class="p-4 border rounded-3 bg-light mb-4">
+                            <h5 class="mb-3 text-dark">Enter New Address</h5>
+                            <form id="shippingAddressForm">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control form-control-rounded-pill" id="firstName" name="firstName" placeholder="Your First Name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control form-control-rounded-pill" id="lastName" name="lastName" placeholder="Your Last Name">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lane1" class="form-label">Address Line 1</label>
+                                    <input type="text" class="form-control form-control-rounded-pill" id="lane1" name="lane1" placeholder="House No, Street Name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="lane2" class="form-label">Address Line 2 </label>
+                                    <input type="text" class="form-control form-control-rounded-pill" id="lane2" name="lane2" placeholder="Apartment, Suite, Unit, etc.">
+                                </div>
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label for="city" class="form-label">Province</label>
+                                        <select id="province-select" onchange="loadCity();"
+                                                class="form-control rounded-pill" id="province">
+                                            <option value="0">Select City</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="province" class="form-label">City</label>
+                                        <select id="city-select" 
+                                                class="form-control rounded-pill" id="province">
+                                            <option value="0">Select City</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="mb-3 col-md-6" >
+                                        <label for="zipCode" class="form-label">Zip Code</label>
+                                        <input type="number" class="form-control form-control-rounded-pill" id="postalCode" name="Postal Code" placeholder="Your Zip Code">
+                                    </div>
+                                    <div class="mb-3 col-md-6" >
+                                        <label for="mobileNumber" class="form-label">Mobile Number</label>
+                                        <input type="tel" class="form-control form-control-rounded-pill" id="mobileNumber" name="mobileNumber" placeholder="+94 7X XXXXXXX">
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-primary rounded-pill px-4 mt-3" onclick="clearAdressData();">Clear Address</button>
+                            </form>
+                        </div>
+
+                        <h5 class="mb-3 mt-5 text-dark">Or, Select from Saved Addresses</h5>
+                        <button type="button" class="btn btn-outline-primary rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#savedAddressesModal">
+                            <i class="bi bi-geo-alt me-2"></i>Select from My Addresses
+                        </button>
+                    </div>
+
+                    <div class="col-lg-5 wow fadeIn" data-wow-delay="0.3s">
+                        <h3 class="mb-4 text-primary">Order Summary</h3>
+                        <div class="summary-card p-4" >
+                            <div id="checkout-container">
+
+                                <div class="row  mb-3" id="checkout-item">
+                                    <div>
+                                        <span id="checkout-product-title">Product-1</span> x 
+                                        <span class="quantity" id="checkout-product-qty">1</span>
+                                        <span class="quantity" >RS. <span id="checkout-product-price"></span></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="d-flex justify-content-between mb-3 pb-2 border-bottom" id="checkout-subtotal-container">
+                                    <h6 class="text-dark">Subtotal</h6>
+                                    <h6 class="text-dark">Rs. <span id="checkout-subtotal"></span></h6>
+
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-3 pb-2 border-bottom" id="checkout-shipping-container">
+                                <h6 class="text-dark">Shipping</h6>
+                                <h6 class="text-dark">Rs. <span id="checkout-shippung-cost"></span></h6>
+                            </div>
+
+                            <div class="d-flex justify-content-between fw-bold mb-4" id="checkout-total-container">
+                                <h5 class="text-dark">Total</h5>
+                                <h5 class="text-primary">Rs. <span id="checkout-total"></span></h5>
+                            </div>
+                            
+                            <div class="mb-4">
+                            <h6 class="mb-3 text-dark">We Accept:</h6> 
+                            <div class="d-flex payment-methods">
+                                <img id="visa" src="assests/img/visa.png" alt="Visa" class="img-fluid" title="Visa">
+                                <img id="master" src="assests/img/master.png" alt="MasterCard" class="img-fluid" title="MasterCard">
+                                <img id="american-express" src="assests/img/american-express.png" alt="American Express" class="img-fluid" title="American Express">
+
+                            </div>
+
+                        </div>
+                        <button class="btn btn-primary rounded-pill py-3 px-5 w-100 mt-3" onclick="checkout();"><i class="bi bi-box-seam me-2"></i>  Place Order</button>
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="savedAddressesModal" tabindex="-1" aria-labelledby="savedAddressesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="savedAddressesModalLabel">Your Saved Shipping Addresses</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3" id="address-container">
+                            <div class="col-md-6" id="address-container-HTML">
+                                <div class="address-card" data-address-id="1">
+                                    <p class="mb-1""> <span id="fName"> </span> <span id="lName"> </span></p>
+
+                                    <p class="mb-1" id="lane-01">Apt 4B, Colombo 03,</p>
+                                    <p class="mb-1" id="lane-02">Apt 4B, Colombo 03,</p>
+                                    <p class="mb-1" id="city">Colombo</p>
+                                    <p class="mb-1" id="province">Western Province</p>
+                                    <p class="mb-1" id="postalCode">25486</p>
+                                    <p class="mb-0" id="mobile">+94 77 1234567</p>
+
+                                    <button class="btn btn-sm btn-primary" data-action="select" data-address-id="dummy_id" id="select-button-id">select</button>
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-lg-4 col-md-6 mt-1">
+                        <a href="index.html" title="Go to Homepage">
+                            <img 
+                                src="assests/img/favicon.png" 
+                                alt="Leafy Lane company logo" 
+                                style="width: 150px; height:100px; max-width: 100%; display: block;"
+                                >
+                        </a>
+                        <p>Welcome to Leafy Lane! We bring high-quality organic fruits, vegetables, and other farm produce directly from local farmers in Sri Lanka to your doorstep. </p>
+                        <div class="d-flex pt-2">
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i class="fab fa-youtube"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="offset-lg-1 col-lg-3 col-md-6 ">
+                        <h4 class="text-light mb-4">Address</h4>
+                        <p><i class="fa fa-map-marker-alt me-3"></i>No.52, Kotuwegoda, Matara</p>
+                        <p><i class="fa fa-phone-alt me-3"></i>0412265789</p>
+                        <p><i class="fa fa-envelope me-3"></i>leafylane6@gmail.com</p>
+                    </div>
+                    <div class="offset-lg-1 col-lg-3 col-md-6">
+                        <h4 class="text-light mb-4">Quick Links</h4>
+                        <a class="btn btn-link" href="">About Us</a>
+                        <a class="btn btn-link" href="">Contact Us</a>
+                        <a class="btn btn-link" href="">Our Services</a>
+                        <a class="btn btn-link" href="">Terms & Condition</a>
+                        <a class="btn btn-link" href="">Support</a>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="container-fluid copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a href="#">Leafy </a>, All Right Reserved.
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Powerd By <a href="#">Callisto software solution </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+                class="bi bi-arrow-up"></i></a>
+        <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <script src="assests/js/main.js"></script>
+        <script src="assests/js/chekout.js"></script>
+
+        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const savedAddressesModal = document.getElementById("savedAddressesModal");
+                                const modalAddressCards = savedAddressesModal.querySelectorAll(".address-card");
+
+                                // Handle address card selection in modal (only for visual highlight)
+                                modalAddressCards.forEach(card => {
+                                    card.addEventListener("click", function (event) {
+                                        // Prevent removal if the remove button was clicked
+                                        if (event.target.dataset.action === "remove") {
+                                            return;
+                                        }
+
+                                        // Remove 'selected' class from all cards in the modal
+                                        modalAddressCards.forEach(c => c.classList.remove("selected"));
+                                        // Add 'selected' class to the clicked card
+                                        this.classList.add("selected");
+
+                                        console.log("Address Card Clicked (no auto-fill):", this.dataset.addressId);
+                                        // At this point, you would typically use this 'selected' address ID
+                                        // to process it further, perhaps with a "Use Selected Address" button
+                                        // that then sends the ID to the backend or copies it manually.
+                                    });
+                                });
+
+                                // Handle "Remove" buttons within the modal
+                                document.querySelectorAll('#savedAddressesModal .address-card .btn-outline-danger').forEach(button => {
+                                    button.addEventListener('click', function (event) {
+                                        event.stopPropagation(); // Prevent the parent card's click event
+                                        if (confirm('Are you sure you want to remove this address?')) {
+                                            this.closest('.address-card').remove();
+                                            console.log("Address removed from UI!");
+                                            // In a real app, you'd also send an AJAX request to delete from database
+                                        }
+                                    });
+                                });
+                            });
+        </script>
+    </body>
+
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>  
+<html lang="en">  
+
+<head>  
+    <meta charset="utf-8">  
+    <title>Foody - Organic Food Website Template</title>  
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">  
+    <meta content="" name="keywords">  
+    <meta content="" name="description">  
+
+    <link href="img/favicon.ico" rel="icon">  
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Lora:wght@600;700&display=swap"  
+        rel="stylesheet">  
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="assests/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="assests/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="assests/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="assests/css/style.css" rel="stylesheet">
+    
+    <style>
+        /* Add any specific styles for SPV if needed */
+        .thumbnail-link.active {
+            border-color: var(--bs-primary) !important; /* Highlight active thumbnail */
+        }
+        /* Ensure images fit nicely within their containers */
+        .fruite-img img {
+            height: 200px; /* Fixed height for consistency */
+            object-fit: cover; /* Cover the area, cropping if necessary */
+        }
+        #mainProductImage {
+            object-fit: contain; /* Contain the image within its bounds */
+            max-height: 450px; /* Max height for main image */
+        }
+    </style>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+</head>  
+
+<body onload="loadData();">  
+    <div id="spinner"  
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">  
+        <div class="spinner-border text-primary" role="status"></div>  
+    </div>  
+
+     <!-- Navbar Start -->
+    <div class="container-fluid  px-0 wow fadeIn" data-wow-delay="0.1s">
+            <div class="top-bar row gx-0 align-items-center d-none d-lg-flex">
+                <div class="col-lg-6 px-5 text-start">
+                    <small><i class="fa fa-map-marker-alt me-2"></i>No.52, Kotuwegoda, Matara</small>
+                    <small class="ms-4"><i class="fa fa-envelope me-2"></i>leafylane6@gmail.com</small>
+                </div>
+                <div class="col-lg-6 px-5 text-end">
+                    <small>Follow us:</small>
+                    <a class="text-body ms-3" href=""><i class="fab fa-facebook-f"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-twitter"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <a class="text-body ms-3" href=""><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <nav class="navbar navbar-expand-lg navbar-light py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+
+                <a href="index.html" title="Go to Homepage">
+                    <img src="assests/img/logo.png" alt="Your Company Logo"
+                        style="width: 150px; height:100px; max-width: 100%; display: block;">
+                </a>
+
+
+                <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <div class="navbar-nav ms-auto p-4 p-lg-0">
+<!--                        <a href="index.html" class="nav-item nav-link active">Home</a>-->
+                        
+                    </div>
+                    <div class="d-none d-lg-flex ms-2">
+                      
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="index.html">
+                            <small class="fa fa-home text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="advanced-search.html">
+                            <small class="fa fa-search text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="my-account.html">
+                            <small class="fa fa-user text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="cart.html">
+                            <small class="fa fa-shopping-bag text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" href="login.html">
+                            <small class="fa fa-sign-in-alt text-body"></small>
+                        </a>
+                        <a class="btn-sm-square bg-white rounded-circle ms-3" onclick="signout();">
+                            <small class="fa fa-sign-out-alt text-body"></small> 
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+    <!-- Navbar End -->
+    
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-10">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card shadow-sm border-0 mb-3">
+                                <div class="card-body p-0">
+                                    <div class="tab-content" id="productImageContent" 
+                                         style="min-height: 450px; display: flex; align-items: center; justify-content: center;">
+                                        <div class="tab-pane fade show active" id="mainImage1" role="tabpanel" aria-labelledby="thumb1-tab">
+                                            <img id="mainProductImage" class="img-fluid w-100 rounded-3" 
+                                                 src="product_images/3/image1.png" alt="Organic Carrot Main Image 1" 
+                                                 style="object-fit: contain; max-height: 450px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-start flex-wrap mt-2">
+                                <a class="nav-link p-2 border rounded-3 mx-1 active thumbnail-link" id="img1" data-main-image-src="product_images/3/image1.png">
+                                    <img src="product_images/3/image1.png" id="thumbImg1" class="img-fluid rounded-2" alt="Carrot Thumbnail 1" style="width: 80px; height: 80px; object-fit: cover;">
+                                </a>
+                                <a class="nav-link p-2 border rounded-3 mx-1 thumbnail-link" id="img2" data-main-image-src="product_images/3/image2.png">
+                                    <img src="product_images/3/image2.png" id="thumbImg2" class="img-fluid rounded-2" alt="Carrot Thumbnail 2" style="width: 80px; height: 80px; object-fit: cover;">
+                                </a>
+                                <a class="nav-link p-2 border rounded-3 mx-1 thumbnail-link" id="img3" data-main-image-src="product_images/3/image3.png">
+                                    <img src="product_images/3/image3.png" id="thumbImg3" class="img-fluid rounded-2" alt="Carrot Thumbnail 3" style="width: 80px; height: 80px; object-fit: cover;">
+                                </a>
+                                </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-body p-4">
+                                    <h2 class="card-title fw-bold mb-3" id="title" >Fresh Organic Carrots</h2>
+                                    
+                                    <p class="text-muted mb-4" >
+                                        Published on <span id="published_on">2025-12-03 03-33 PM</span>
+                                    </p>
+                                    
+                                    <p class="fs-4 fw-bold text-primary mb-3">Rs.<span id="price">4.50</span> /<span id="uni-type"> kg</span></p>
+
+                                    <div class="d-flex mb-2">
+                                        <i class="fa fa-star text-warning me-1"></i>
+                                        <i class="fa fa-star text-warning me-1"></i>
+                                        <i class="fa fa-star text-warning me-1"></i>
+                                        <i class="fa fa-star text-warning me-1"></i>
+                                        <i class="fa fa-star text-secondary me-1"></i>
+                                        <span class="ms-2 text-muted">(4.0 Reviews)</span>
+                                    </div>
+
+                                    <p class="text-muted mb-4" id="description">
+                                        Crisp, sweet, and packed with vitamins, our organic carrots are freshly harvested and perfect for snacking, cooking, or juicing.
+                                    </p>
+
+                                    <ul class="list-group list-group-flush mb-4">
+                                        <li class="list-group-item d-flex align-items-center"><i class="fa fa-user text-success me-2 fs-5"></i><span id="user-name">User name</span></li>
+                                        <li class="list-group-item d-flex align-items-center"><i class="fa fa-phone text-success me-2 fs-5"></i><span id="mobile">07X XXXXXXX</span></li>
+                                        
+                                    </ul>
+
+                                    <div class="mb-4">
+                                        <label for="quantity" class="form-label fw-bold">Quantity:<span id="stock"></span>Available</label>
+                                        <div class="input-group quantity" style="width: 150px;">
+                                            <button class="btn btn-sm btn-outline-secondary rounded-start-pill border-0 btn-minus"><i class="fa fa-minus"></i></button>
+                                            <input type="text" class="form-control text-center border-0" value="1" id="add_to_cart_qty">
+                                            <button class="btn btn-sm btn-outline-secondary rounded-end-pill border-0 btn-plus"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                                        <button class="btn btn-primary rounded-pill px-4 py-2" id="add_to_cart_main"><i class="fa fa-shopping-bag me-2"></i> Add to Cart</button>
+                                        <button class="btn btn-outline-secondary rounded-pill px-4 py-2"><i class="far fa-heart me-2"></i> Add to Wishlist</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div class="row g-4 justify-content-center mt-5">
+                <div class="col-lg-10 text-center">
+                    <h2 class="fw-bold mb-5 text-primary">Related Organic Products</h2>
+                    <div class="row g-4" id="smiler-product-main">
+                        <div class="col-md-6 col-lg-3" id="similar_product">
+                            <div class="rounded position-relative fruite-item">
+                                <div class="fruite-img">
+                                    <a href="#" id="smilar_product_a1">
+                                        <img src="img/related-product-1.jpg" id="similar_product_image" class="img-fluid w-100 rounded-top" alt="Organic Bananas">
+                                    </a>
+                                    </div>
+                                <div class="p-4 border-top-0 rounded-bottom-2 justify-content-center">
+                                    <h4 id="smiler-product-title">Organic Bananas</h4>
+                                    
+                                    <div class="d-flex justify-content-center flex-lg-wrap">
+                                        <p class="text-dark fs-5 fw-bold mb-0">RS. <span id="smiler-product-price">2.50</span> / <span id="smiler-product-unit-type">kg</span></p>
+                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary" id="smilar_product_add_to_car"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="rounded position-relative fruite-item">
+                                <div class="fruite-img">
+                                    <img src="" class="img-fluid w-100 rounded-top" alt="Fresh Organic Carrots">
+                                </div>
+                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <h4>Fresh Organic Carrots</h4>
+                                    <p>Crisp and nutrient-rich.</p>
+                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                        <p class="text-dark fs-5 fw-bold mb-0">$3.00 / kg</p>
+                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="rounded position-relative fruite-item">
+                                <div class="fruite-img">
+                                    <img src="g" class="img-fluid w-100 rounded-top" alt="Organic Brown Eggs">
+                                </div>
+                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <h4>Organic Brown Eggs</h4>
+                                    <p>Farm-fresh, healthy protein.</p>
+                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                        <p class="text-dark fs-5 fw-bold mb-0">$5.50 / dozen</p>
+                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="rounded position-relative fruite-item">
+                                <div class="fruite-img">
+                                    <img src="" class="img-fluid w-100 rounded-top" alt="Organic Spinach">
+                                </div>
+                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                    <h4>Organic Spinach</h4>
+                                    <p>Nutrient-dense leafy greens.</p>
+                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                        <p class="text-dark fs-5 fw-bold mb-0">$2.75 / bunch</p>
+                                        <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4 justify-content-center mt-5 py-4 bg-light rounded">
+                <div class="col-lg-10">
+                    <div class="row text-center">
+                        <div class="col-md-3 mb-3 mb-md-0">
+                            <i class="fa fa-truck fa-2x text-primary mb-2"></i>
+                            <h6 class="fw-bold mb-0">Fresh & Fast Delivery</h6>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0">
+                            <i class="fa fa-leaf fa-2x text-primary mb-2"></i>
+                            <h6 class="fw-bold mb-0">100% Organic Certified</h6>
+                        </div>
+                        <div class="col-md-3 mb-3 mb-md-0">
+                            <i class="fa fa-hand-holding-usd fa-2x text-primary mb-2"></i>
+                            <h6 class="fw-bold mb-0">Satisfaction Guarantee</h6>
+                        </div>
+                        <div class="col-md-3">
+                            <i class="fa fa-comments fa-2x text-primary mb-2"></i>
+                            <h6 class="fw-bold mb-0">Friendly Support</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-lg-4 col-md-6 mt-1">
+                        <a href="index.html" title="Go to Homepage">
+                            <img src="assests/img/favicon.png" alt="Leafy Lane company logo"
+                                style="width: 150px; height:100px; max-width: 100%; display: block;">
+                        </a>
+                        <p>Welcome to Leafy Lane! We bring high-quality organic fruits, vegetables, and other farm
+                            produce directly from local farmers in Sri Lanka to your doorstep. </p>
+                        <div class="d-flex pt-2">
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i
+                                    class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-1" href=""><i
+                                    class="fab fa-youtube"></i></a>
+                            <a class="btn btn-square btn-outline-light rounded-circle me-0" href=""><i
+                                    class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="offset-lg-1 col-lg-3 col-md-6 ">
+                        <h4 class="text-light mb-4">Address</h4>
+                        <p><i class="fa fa-map-marker-alt me-3"></i>No.52, Kotuwegoda, Matara</p>
+                        <p><i class="fa fa-phone-alt me-3"></i>0412265789</p>
+                        <p><i class="fa fa-envelope me-3"></i>leafylane6@gmail.com</p>
+                    </div>
+                    <div class="offset-lg-1 col-lg-3 col-md-6">
+                        <h4 class="text-light mb-4">Quick Links</h4>
+                        <a class="btn btn-link" href="">About Us</a>
+                        <a class="btn btn-link" href="">Contact Us</a>
+                        <a class="btn btn-link" href="">Our Services</a>
+                        <a class="btn btn-link" href="">Terms & Condition</a>
+                        <a class="btn btn-link" href="">Support</a>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="container-fluid copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a href="#">Leafy </a>, All Right Reserved.
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Powerd By <a href="#">Callisto software solution </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     <!-- Footer End -->
+
+     <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+                class="bi bi-arrow-up"></i></a>
+
+
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assests/lib/wow/wow.min.js"></script>
+        <script src="assests/lib/easing/easing.min.js"></script>
+        <script src="assests/lib/waypoints/waypoints.min.js"></script>
+        <script src="assests/lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="assests/js/main.js"></script>
+        <script src="assests/js/single-product.js"></script>
+        
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainProductImage = document.getElementById('mainProductImage');
+            const thumbnailLinks = document.querySelectorAll('.thumbnail-link');
+
+            // Set the first thumbnail as active by default and update the main image
+            // This ensures the page loads with the first image displayed and active class set
+            if (thumbnailLinks.length > 0) {
+                // Ensure the first thumbnail has the 'active' class
+                thumbnailLinks[0].classList.add('active');
+                // Set the main image src to the first thumbnail's data-main-image-src
+                const initialMainImageSrc = thumbnailLinks[0].getAttribute('data-main-image-src');
+                if (mainProductImage && initialMainImageSrc) {
+                    mainProductImage.src = initialMainImageSrc;
+                }
+            }
+
+            thumbnailLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default link behavior (e.g., jumping to top)
+
+                    // Remove 'active' class from all thumbnail links
+                    thumbnailLinks.forEach(thumb => thumb.classList.remove('active'));
+
+                    // Add 'active' class to the clicked thumbnail link
+                    this.classList.add('active');
+
+                    // Get the data-main-image-src from the clicked thumbnail
+                    const newImageSrc = this.getAttribute('data-main-image-src');
+
+                    // Change the main product image's src
+                    if (mainProductImage && newImageSrc) {
+                        mainProductImage.src = newImageSrc;
+                    } else {
+                        // Optional: Log an error if image element or source is missing
+                        console.error("Could not update main image. Main image element or new image source is missing.", {mainProductImage, newImageSrc});
+                    }
+                });
+            });
+
+            // Quantity increase/decrease logic (requires jQuery, which is linked in your HTML)
+            // This part uses jQuery, make sure jQuery is loaded before this script runs.
+            $('.quantity button').on('click', function () {
+                var button = $(this);
+                var input = button.parent().find('input');
+                var oldValue = parseFloat(input.val());
+                
+                var newVal;
+
+                if (button.hasClass('btn-plus')) {
+                    newVal = oldValue + 1;
+                } else {
+                    newVal = oldValue - 1;
+                    if (newVal < 1) { // Quantity cannot go below 1
+                        newVal = 1;
+                    }
+                }
+                input.val(newVal);
+            });
+        });
+    </script>
+      
+</body>  
+
+</html>
